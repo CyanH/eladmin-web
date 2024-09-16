@@ -34,6 +34,9 @@
             v-model="deptDatas"
             :load-options="loadDepts"
             :options="depts"
+            :flat="true"
+            :auto-select-descendants="true"
+            :default-expand-level="1"
             multiple
             style="width: 380px"
             placeholder="请选择"
@@ -187,9 +190,12 @@ export default {
       form.depts.forEach(function(dept) {
         _this.deptDatas.push(dept.id)
       })
+      // 将角色的菜单清空，避免日志入库数据过长
+      form.menus = null
     },
     // 提交前做的操作
     [CRUD.HOOK.afterValidateCU](crud) {
+      console.log(this.deptDatas)
       if (crud.form.dataScope === '自定义' && this.deptDatas.length === 0) {
         this.$message({
           message: '自定义数据权限不能为空',
